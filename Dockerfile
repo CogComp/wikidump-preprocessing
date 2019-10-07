@@ -10,8 +10,8 @@ ENV PATH=/miniconda/bin:${PATH}
 RUN conda update -y conda
 RUN conda create -n wiki-proc python=3.7 && bash -c "source activate wiki-proc && conda install -y pip spacy && pip install bs4 && pip install hanziconv"
 RUN echo "source activate wiki-proc" > ~/.bashrc
-RUN mkdir /workspace/ && cd /workspace/ && git clone https://github.com/attardi/wikiextractor && git clone https://github.com/shyamupa/wikidump_preprocessing 
-RUN cd /workspace/wikidump_preprocessing \
+RUN mkdir /workspace/ && cd /workspace/ && git clone https://github.com/attardi/wikiextractor && git clone https://github.com/CogComp/wikidump-preprocessing.git
+RUN cd /workspace/wikidump-preprocessing \
     && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/dumpdir/\/workspace\/dumpdir/g" makefile \
     && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/outdir/\/workspace\/outdir/g" makefile \
     && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/wikiextractor/\/workspace\/wikiextractor/g" makefile \
