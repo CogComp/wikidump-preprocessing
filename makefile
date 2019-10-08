@@ -10,8 +10,12 @@ ERROR_STRING = "[ERROR]"
 WARN_STRING  = "[WARNING]"
 COM_STRING   = "Compiling"
 
+ifndef DATE
 DATE=20190501
+endif
+ifndef lang 
 lang=tr
+endif
 # window size for mention context
 window=20
 # location where wikipedia dumps are downloaded
