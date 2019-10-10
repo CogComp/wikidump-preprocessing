@@ -1,5 +1,5 @@
-FROM ubuntu 
-ARG wiki_date=20190501
+FROM ubuntu
+ARG wiki_date=latest
 ARG wiki_lang=tr
 RUN echo "Selected language $wiki_lang, Selected data $wiki_date"
 RUN apt update && apt install -y wget unzip curl bzip2 git apt-utils sed make vim
@@ -12,10 +12,6 @@ RUN conda create -n wiki-proc python=3.7 && bash -c "source activate wiki-proc &
 RUN echo "source activate wiki-proc" > ~/.bashrc
 RUN mkdir /workspace/ && cd /workspace/ && git clone https://github.com/attardi/wikiextractor && git clone https://github.com/CogComp/wikidump-preprocessing.git
 RUN cd /workspace/wikidump-preprocessing \
-    && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/dumpdir/\/workspace\/dumpdir/g" makefile \
-    && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/outdir/\/workspace\/outdir/g" makefile \
-    && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/wikiextractor/\/workspace\/wikiextractor/g" makefile \
-    && sed -i "s/\/Users\/nicolette\/anaconda2\/envs\/py3\/bin\/python/\/miniconda\/envs\/wiki-proc\/bin\/python/g" makefile \
-    && sed -i "s/DATE=20190501/DATE=$wiki_date/g" makefile \
-    && sed -i "s/lang=tr/lang=$wiki_lang/g" makefile
+    && sed -i "s/wiki_date=latest/wiki_date=$wiki_date/g" makefile \
+    && sed -i "s/wiki_lang=tr/wiki_lang=$wiki_lang/g" makefile
 WORKDIR /workspace
