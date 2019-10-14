@@ -12,6 +12,7 @@ RUN conda create -n wiki-proc python=3.7 && bash -c "source activate wiki-proc &
 RUN echo "source activate wiki-proc" > ~/.bashrc
 RUN mkdir /workspace/ && cd /workspace/ && git clone -b feature/submodule --single-branch https://github.com/CogComp/wikidump-preprocessing.git
 RUN cd /workspace/wikidump-preprocessing \
+    && git submodule update --init --recursive \
     && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/dumpdir/\/workspace\/dumpdir/g" makefile \
     && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/outdir/\/workspace\/outdir/g" makefile \
     && sed -i "s/\/Users\/nicolette\/anaconda2\/envs\/py3\/bin\/python/\/miniconda\/envs\/wiki-proc\/bin\/python/g" makefile \
