@@ -24,7 +24,10 @@ DUMPDIR = "/Users/nicolette/Documents/nlp-wiki/dumpdir"
 # good practice to make this different from the dumpdir, to separate
 # resources from processed output
 OUTDIR = "/Users/nicolette/Documents/nlp-wiki/outdir"
-WIKIEXTRACTOR = "/Users/nicolette/Documents/nlp-wiki/wikiextractor/WikiExtractor.py"
+# MAKEFILEDIR stores the path to the present makefile, which is also
+# the path to the repo's directory 
+MAKEFILEDIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+WIKIEXTRACTOR = "${MAKEFILEDIR}/wikiextractor/WikiExtractor.py"
 ENCODING = utf-8
 # path to python3 binary
 PYTHONBIN = /Users/nicolette/anaconda2/envs/py3/bin/python
