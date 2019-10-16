@@ -10,7 +10,7 @@ ENV PATH=/miniconda/bin:${PATH}
 RUN conda update -y conda
 RUN conda create -n wiki-proc python=3.7 && bash -c "source activate wiki-proc && conda install -y pip spacy && pip install bs4 && pip install hanziconv"
 RUN echo "source activate wiki-proc" > ~/.bashrc
-RUN mkdir /workspace/ && cd /workspace/ && git clone -b feature/submodule --single-branch https://github.com/CogComp/wikidump-preprocessing.git
+RUN mkdir /workspace/ && cd /workspace/ && git clone -b master --single-branch https://github.com/CogComp/wikidump-preprocessing.git
 RUN cd /workspace/wikidump-preprocessing \
     && git submodule update --init --recursive \
     && sed -i "s/\/Users\/nicolette\/Documents\/nlp-wiki\/dumpdir/\/workspace\/dumpdir/g" makefile \
