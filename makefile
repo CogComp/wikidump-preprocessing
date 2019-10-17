@@ -13,23 +13,26 @@ COM_STRING   = "Compiling"
 ifndef wiki_date
 wiki_date=latest
 endif
-ifndef wiki_lang
+ifndef wiki_lang 
 wiki_lang=tr
 endif
 # window size for mention context
 window=20
 # location where wikipedia dumps are downloaded
 DUMPDIR_BASE = "/workspace/dumpdir"
-DUMPDIR="${DUMPDIR_BASE}-${wiki_lang}-${wiki_date}"
+DUMPDIR = "${DUMPDIR_BASE}/${wiki_lang}-${wiki_date}"
 
 # good practice to make this different from the dumpdir, to separate
 # resources from processed output
 OUTDIR_BASE = "/workspace/outdir"
-OUTDIR="${OUTDIR_BASE}-${wiki_lang}-${wiki_date}"
-WIKIEXTRACTOR = "/workspace/wikiextractor/WikiExtractor.py"
+OUTDIR = "${OUTDIR_BASE}/${wiki_lang}-${wiki_date}"
+# MAKEFILEDIR stores the path to the present makefile, which is also
+# the path to the repo's directory 
+MAKEFILEDIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+WIKIEXTRACTOR = "${MAKEFILEDIR}/wikiextractor/WikiExtractor.py"
 ENCODING = utf-8
 # path to python3 binary
-PYTHONBIN = /miniconda/envs/wiki-proc/bin/python
+PYTHONBIN = python3 
 dumps:
 	@if [ -f "${DUMPDIR}/${wiki_lang}wiki/${wiki_lang}wiki-${wiki_date}-pages-articles.xml.bz2" ]; then \
 	echo $(ERROR_COLOR) "dump exists in ${DUMPDIR}!" $(NO_COLOR); \
