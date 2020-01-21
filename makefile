@@ -13,11 +13,12 @@ COM_STRING   = "Compiling"
 # MAKEFILEDIR stores the path to the present makefile, which is also
 # the path to the repo's directory 
 MAKEFILEDIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-WIKIEXTRACTOR = "${MAKEFILEDIR}/wikiextractor/WikiExtractor.py"
-ENCODING = utf-8
+WIKIEXTRACTOR="${MAKEFILEDIR}/wikiextractor/WikiExtractor.py"
+ENCODING=utf-8
+PYTHONIOENCODING=utf-8
 # path to python3 binary
 ifndef PYTHONBIN
-PYTHONBIN = python3
+PYTHONBIN=python3
 endif
 ifndef DATE
 $(error DATE is not defined!)	
@@ -29,13 +30,13 @@ endif
 ifndef DUMPDIR_BASE
 $(error DUMPDIR_BASE is not defined!)
 endif
-DUMPDIR=${DUMPDIR_BASE}/${LANG}-${DATE}
+DUMPDIR=${DUMPDIR_BASE}/${LANG}/${LANG}-${DATE}
 # good practice to make this different from the dumpdir, to separate
 # resources from processed output
 ifndef OUTDIR_BASE
 $(error OUTDIR_BASE is not defined!)
 endif
-OUTDIR=${OUTDIR_BASE}/${LANG}-${DATE}
+OUTDIR=${OUTDIR_BASE}/${LANG}/${LANG}-${DATE}
 # window size for mention context
 # this is used in generating .mid files
 ifndef WINDOW
@@ -52,6 +53,10 @@ softlinks:
 	@mkdir -p ${OUTDIR}; \
 	echo $(OK_COLOR) "making softlinks into output folder ${OUTDIR}" $(NO_COLOR); \
 	./scripts/make_softlinks.sh ${LANG} ${DATE} ${DUMPDIR} ${OUTDIR};
+
+cleanlinks:
+	echo $(OK_COLOR) "cleaning softlinks from output folder ${OUTDIR}" $(NO_COLOR); \
+	./scripts/clean_softlinks.sh ${LANG} ${DATE} ${OUTDIR};
 
 text: dumps
 	@if [ -d "${OUTDIR}/${LANG}wiki_with_links" ]; then \
@@ -147,5 +152,5 @@ probmap: id2title redirects countsmap langlinks
 	--out_prefix ${OUTDIR}/probmap/${LANG}wiki-${DATE} \
 	--lang ${LANG}; \
 	fi	
-all:	dumps softlinks text id2title redirects langlinks countsmap probmap hyperlinks mid
+all:	dumps softlinks text id2title redirects langlinks countsmap probmap hyperlinks cleanlinks # mid
 	echo "all done"

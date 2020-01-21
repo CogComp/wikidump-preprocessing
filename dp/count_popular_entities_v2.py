@@ -26,7 +26,7 @@ class EntityCounter(BasicPageProcessor):
     def __init__(self, wikipath, linksout, contsout, redirect_map, t2id, debug=False, limit=500000):
         super(EntityCounter, self).__init__(wikipath)
         self.counts = Counter()
-        self.links = open(linksout, "w")
+        self.links = open(linksout, "w", encoding='utf-8')
         self.contsout = contsout
         self.t2id = t2id
         self.redirect_map = redirect_map
@@ -77,7 +77,7 @@ class EntityCounter(BasicPageProcessor):
             if title not in self.counts:
                 self.counts[title] = 0
 
-        with open(self.contsout, "w") as out:
+        with open(self.contsout, "w", encoding='utf-8') as out:
             for idx, (title, cnt) in enumerate(self.counts.most_common()):
                 if title not in self.t2id:
                     logging.info("did not find title %s in t2id", title)

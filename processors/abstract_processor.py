@@ -31,7 +31,7 @@ class AbstractProcessor(object):
             logging.info(dirpath)
             for filename in sorted(os.listdir(dirpath)):
                 filepath = os.path.join(dirpath, filename)
-                f = open(filepath)
+                f = open(filepath, encoding='utf-8')
                 self.process_file(f)
                 self.after_file_hook()
             self.after_dir_hook()

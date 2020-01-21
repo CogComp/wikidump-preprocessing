@@ -27,7 +27,7 @@ def read_id2title(wikiprefix, encoding, outpath):
     schema = parse_schema(filename, encoding)
     f = gzip.open(filename, "rt", encoding=encoding)
     bad = 0
-    with open(outpath, "w") as out:
+    with open(outpath, "w", encoding='utf-8') as out:
 
         for line in f:
             if "INSERT INTO" not in line:

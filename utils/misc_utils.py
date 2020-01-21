@@ -268,7 +268,7 @@ def load_id2title(f):
     else:
         id2t, t2id = {}, {}
         redirect_set = set([])
-        for line in open(f):
+        for line in open(f, encoding='utf-8'):
             parts = line.strip().split("\t")
             if len(parts) != 3:
                 logging.info("bad line %s", line)
@@ -297,7 +297,7 @@ def load_redirects(path):
         logging.info("pkl found! loading map %s", pkl_path)
         redirect2title = load(pkl_path)
     else:
-        f = open(path)
+        f = open(path, encoding='utf-8')
         redirect2title = {}
         err = 0
         logging.info("pkl not found ...")

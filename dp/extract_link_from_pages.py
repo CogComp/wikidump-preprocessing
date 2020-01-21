@@ -176,11 +176,9 @@ def extract_from_one_file(file_path, encoding, out_path, normalizer, ignore_null
 
     dir_to_write = os.path.dirname(out_path)
     os.makedirs(dir_to_write, exist_ok=True)
-    with open(out_path, 'w') as out_f:
-        # out_f.write(json.dumps(pages, indent=4))
+    with open(out_path, 'w', encoding='utf-8') as out_f:
         json.dump(pages, out_f, ensure_ascii=False, indent=4)
-    with open("%s.brief" % out_path, 'w') as out_f:
-        # out_f.write(json.dumps(pages_brief, indent=4))
+    with open("%s.brief" % out_path, 'w', encoding='utf-8') as out_f:
         json.dump(pages_brief, out_f, ensure_ascii=False, indent=4)
     return doc_count
 

@@ -85,7 +85,7 @@ def read_surface_title_maps(s2t, t2s, cand_file, normalizer, add_ascii=False, to
 
 def compute_x_given_y(path, y2x):
     start = time.time()
-    with open(path, "w") as y2x2prob:
+    with open(path, "w", encoding='utf-8') as y2x2prob:
         for y in y2x:
             x2cnt = Counter(y2x[y])
             total = sum(x2cnt.values())
@@ -306,7 +306,7 @@ if __name__ == "__main__":
                                  add_ascii=args["add_ascii"], is_redirect=is_redirect_map)
         compute_phrase_prob(p2t=ph2t, t2p=t2ph, out_prefix=out_prefix + ".tnr")
 
-        read_surface_title_maps(s2t=ph2t, t2s=t2ph, cand_file=open(links), normalizer=normalizer, lang=lang,
+        read_surface_title_maps(s2t=ph2t, t2s=t2ph, cand_file=open(links, encoding='utf-8'), normalizer=normalizer, lang=lang,
                                 add_ascii=args["add_ascii"])
         compute_phrase_prob(p2t=ph2t, t2p=t2ph, out_prefix=out_prefix)
 
@@ -321,7 +321,7 @@ if __name__ == "__main__":
         #     add_unicode(st2t=wo2t, phrase=False)
         compute_word_prob(w2t=wo2t, t2w=t2wo, out_prefix=out_prefix + ".tnr")
 
-        read_surface_title_maps(s2t=wo2t, t2s=t2wo, cand_file=open(links), normalizer=normalizer, tokenize=True,
+        read_surface_title_maps(s2t=wo2t, t2s=t2wo, cand_file=open(links, encoding='utf-8'), normalizer=normalizer, tokenize=True,
                                 lang=lang, add_ascii=args["add_ascii"])
         compute_word_prob(w2t=wo2t, t2w=t2wo, out_prefix=out_prefix)
         end = time.time()

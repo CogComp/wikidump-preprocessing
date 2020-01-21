@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import print_function
 import argparse
 import logging
@@ -63,13 +64,14 @@ if __name__ == "__main__":
     encoding = "utf-8"  # args["encoding"]
     try:
         frid2en, all_lang_map = read_frid2en(filename=langlinks_file, target_lang="en", encoding=encoding)
-        with open(args["out"] + ".all_langs", "w") as out:
+        with open(args["out"] + ".all_langs", "w", encoding='utf-8') as out:
             for fr_page_id, lang, en_title in all_lang_map:
                 if en_title.lower().startswith("user:") or en_title.lower().startswith(
                         "template:") or en_title.lower().startswith("wikipedia:") or en_title.lower().startswith(
                         "category:"):
                     continue
-                buf = "%s\t%s\t%s\n" % (fr_page_id, lang, en_title)
+                # buf = "%s\t%s\t%s\n" % (fr_page_id, lang, en_title)
+                buf = "{}\t{}\t{}\n".format(fr_page_id, lang, en_title)
                 out.write(buf)
 
     except UnicodeDecodeError as e:
@@ -78,7 +80,7 @@ if __name__ == "__main__":
         sys.exit(0)
     frid2t, frt2id, _ = load_id2title(frid2title_path)
     missed_pids = 0
-    with open(args["out"], "w") as out:
+    with open(args["out"], "w", encoding='utf-8') as out:
         for pid in frid2en:
             en_title = frid2en[pid]
             if pid not in frid2t:

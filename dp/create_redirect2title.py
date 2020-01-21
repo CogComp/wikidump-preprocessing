@@ -95,7 +95,7 @@ if __name__ == "__main__":
     #         out.write(buf + "\n")
 
     redirect2title = read_redirects(wiki_path+"-redirect.sql.gz", "utf-8", id2t)
-    with open(outpath, "w") as out:
+    with open(outpath, "w", encoding='utf-8') as out:
         if "zhwiki" in wiki_path:
             buf = "\t".join(["杰布·布什", "傑布·布希"])
             out.write(buf + "\n")
