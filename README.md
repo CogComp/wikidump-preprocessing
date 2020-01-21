@@ -4,6 +4,51 @@ Script for processing wikipedia dumps (in any language) and extracting useful me
 
 Install the requirements, modify the makefile appropriately, and run. 
 
+Requirements
+-----------------
+You need python >=3.5. Also install the following two packages.
+
+````python
+pip3 install bs4
+pip3 install spacy # (for generating mid files)
+pip3 install hanziconv # (for chinese traditional to simplified conversion)
+````
+
+Running
+-------
+**Option 1**:\
+For ease of use, we provide a `makefile` that specifies targets to automatically run all processing scripts. To use the makefile, you need to
+
+1. Run `git submodule update --init --recursive` to download `WikiExtractor` submodule.
+
+2. Create a download directory for wikipedia dumps (say `/path/to/dumpdir`) and set `DUMPDIR_BASE` environment variable accordingly. The wikipedia dumps will be downloaded under `DUMPDIR` in a subdirectory with language and date information (for instance the Turkish Wikipedia dumps will be downloaded under `DUMPDIR/tr-date/trwiki/`). This variable is **MANDATORY** and if not set `make` will fail.
+
+**For Cogcomp Internal Use**: 
+Wikipedia dumps are already available under `/shared/corpora/wikipedia_dumps`, so simply set the `DUMPDIR` to `/shared/corpora/wikipedia_dumps`. For instance, the Turkish wikipedia resources are in `/shared/corpora/wikipedia_dumps/trwiki`.
+
+3. Set the `LANG` environment variable to the two-letter language code used by Wikipedia to identify the language (eg. `tr` for Turkish, `es` for Spanish etc.). This variable is **MANDATORY** and if not set `make` will fail.
+
+4. Specify a `OUTDIR_BASE` environment variable. This is the directory where the resources will be generated (eg. `path/to/my/resources/trwiki` for Turkish Wikipedia). The result will be saved in `${OUTPUT_BASE}/${LANG}-${DATE}`. This variable is **MANDATORY** and if not set `make` will fail.
+
+5. Set the `DATE` environment variable to identify the timestamp of the Wikipedia dump to download. Make sure that this link works `https://dumps.wikimedia.org/${LANG}wiki/${DATE}/`. A safe choice is `latest`. Note that you can view what dates are available by visiting `https://dumps.wikimedia.org/${LANG}wiki`. This variable is **MANDATORY** and if not set `make` will fail.
+
+6. Make sure `PYTHONBIN` points to the correct python binary. The default value is `python3`.
+
+7. For generating mid files, you may want to modify the default window size for capturing the context of the link. The default value is 20. You can change that by settting the `WINDOW` environment variable.
+
+8. Run the command `make all`. This should perform all the preprocessing steps above by following the build dependencies specified in the makefile.
+
+9. Make sure your environment variable is available to the forked processes. The command to do this depends on the shell you use. If you use `bash` you would do `export VAR=value`.
+
+**Option 2: For Docker users**\
+We also provide a Dockerfile that will setup all the required environment for you. To use it:
+1. Build a docker image with the provided Dockerfile. Our Dockerfile comes with two arguments: `wiki_date`, and `wiki_lang`. `wiki_date` specifies a date for the wiki dumps, and `wiki_lang` specifies the default language for download and preprocessing. Both can later be changed once built (see step 4 and 5). See https://docs.docker.com/engine/reference/commandline/build/ is you have trouble building the docker image.
+2. Run the newly built docker image. Your working directory should be `/workspace`. See https://docs.docker.com/engine/reference/commandline/run/ if you have any problems running the image.
+3. Go to /workspace/wikidump_preprocessing
+4. If you want to modify date of wiki dump, you can simply set environment variable `DATE`. If you are using bash and want to override date to be 20191001, for instance, simply run `export DATE=20191001` before running step 6.
+5. Now if you want to override the built wiki language, simply set environment variable `lang` to the two-letter language code such as 'en', 'fr', etc. If you are using bash and want to override language to be French, for instance, simply run `export lang=fr` before running step 6.
+6. `make all` will download all the wiki articles and run all the preprocessing steps.
+
 Description
 ------------
 This repository contains scripts to perform the following preprocessing steps.
@@ -136,45 +181,6 @@ The tab-separated fields, are, from left to right:
 Redirects map using \*redirect.sql.gz (target `redirects` in `makefile`). 
 
 Redirects tell you that the wikipedia link [POTUS44](https://en.wikipedia.org/wiki/POTUS44) redirects to the page [Barack_Obama](https://en.wikipedia.org/wiki/Barack_Obama) in the English Wikipedia.
-
-Requirements
------------------
-You need python >=3.5. Also install the following two packages.
-
-````python
-pip3 install bs4
-pip3 install hanziconv # (for chinese traditional to simplified conversion)
-````
-
-Running
--------
-**Option 1**:\
-For ease of use, we provide a `makefile` that specifies targets to automatically run all processing scripts. To use the makefile, you need to
-
-1. Download/Clone [wikiextractor](https://github.com/attardi/wikiextractor). Modify path `WIKIEXTRACTOR` in makefile to point to it.
-
-2. Create a download directory for wikipedia dumps (say `/path/to/dumpdir`) and set `DUMPDIR` accordingly. The wikipedia dumps will be downloaded under `DUMPDIR` (for instance the Turkish Wikipedia dumps will be downloaded under `DUMPDIR/trwiki/`)
-
-**For Cogcomp Internal Use**: 
-Wikipedia dumps are already available under `/shared/corpora/wikipedia_dumps`, so simply set the `DUMPDIR` to `/shared/corpora/wikipedia_dumps`. For instance, the Turkish wikipedia resources are in `/shared/corpora/wikipedia_dumps/trwiki`.
-
-3. Set the `lang` variable to the two-letter language code used by Wikipedia to identify the language (eg. `tr` for Turkish, `es` for Spanish etc.)
-4. Specify a `OUTDIR`. This is the directory where the resources will be generated (eg. `path/to/my/resources/trwiki` for Turkish Wikipedia). To keep the code generic, you may want to use the `lang` variable to define the `OUTDIR` (e.g., `path/to/my/resources/${lang}wiki`).
-
-5. Modify the `DATE` variable to identify the timestamp of the Wikipedia dump to download. Make sure that this link works `https://dumps.wikimedia.org/${lang}wiki/${DATE}/`.
-
-6. Make sure `PYTHONBIN` points to the correct python binary.
-
-7. Run the command `make all`. This should perform all the preprocessing steps above by following the build dependencies specified in the makefile.
-
-**Option 2: For Docker users**\
-We also provide a Dockerfile that will setup all the required environment for you. To use it:
-1. Build a docker image with the provided Dockerfile. Our Dockerfile comes with two arguments: `wiki_date`, and `wiki_lang`. `wiki_date` specifies a date for the wiki dumps, and `wiki_lang` specifies the default language for download and preprocessing. Both can later be changed once built (see step 4 and 5). See https://docs.docker.com/engine/reference/commandline/build/ is you have trouble building the docker image.
-2. Run the newly built docker image. Your working directory should be `/workspace`. See https://docs.docker.com/engine/reference/commandline/run/ if you have any problems running the image.
-3. Go to /workspace/wikidump_preprocessing
-4. If you want to modify date of wiki dump, you can simply set environment variable `DATE`. If you are using bash and want to override date to be 20191001, for instance, simply run `export DATE=20191001` before running step 6.
-5. Now if you want to override the built wiki language, simply set environment variable `lang` to the two-letter language code such as 'en', 'fr', etc. If you are using bash and want to override language to be French, for instance, simply run `export lang=fr` before running step 6.
-6. `make all` will download all the wiki articles and run all the preprocessing steps.
 
 Sanity Check
 ------
