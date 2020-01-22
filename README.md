@@ -42,12 +42,11 @@ Wikipedia dumps are already available under `/shared/corpora/wikipedia_dumps`, s
 
 **Option 2: For Docker users**\
 We also provide a Dockerfile that will setup all the required environment for you. To use it:
-1. Build a docker image with the provided Dockerfile. Our Dockerfile comes with two arguments: `wiki_date`, and `wiki_lang`. `wiki_date` specifies a date for the wiki dumps, and `wiki_lang` specifies the default language for download and preprocessing. Both can later be changed once built (see step 4 and 5). See https://docs.docker.com/engine/reference/commandline/build/ is you have trouble building the docker image.
-2. Run the newly built docker image. Your working directory should be `/workspace`. See https://docs.docker.com/engine/reference/commandline/run/ if you have any problems running the image.
-3. Go to /workspace/wikidump_preprocessing
-4. If you want to modify date of wiki dump, you can simply set environment variable `DATE`. If you are using bash and want to override date to be 20191001, for instance, simply run `export DATE=20191001` before running step 6.
-5. Now if you want to override the built wiki language, simply set environment variable `lang` to the two-letter language code such as 'en', 'fr', etc. If you are using bash and want to override language to be French, for instance, simply run `export lang=fr` before running step 6.
-6. `make all` will download all the wiki articles and run all the preprocessing steps.
+1. Build a docker image with the provided Dockerfile. 
+2. Run the newly built docker image (you can use the docker-compose.yml file provided). 
+3. Go to /workspace/
+4. The following example will process the 20200101 wiki dump snapshot for Somali language:
+`make DATE=20200101 LANG=so DUMPDIR_BASE=/workspace/linked_volume/dump OUTDIR_BASE=/workspace/linked_volume/wiki PYTHONBIN=python all` 
 
 Description
 ------------
