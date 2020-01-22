@@ -1,0 +1,13 @@
+version: '2.2'
+services:
+  wikidumppre:
+    image: cogcomp/wikidump-preprocessing:0.1.22
+    container_name: wikidumppre
+    command: tail -f /dev/null
+    volumes:
+      - ~/docker/wikidump-preprocessing/linked_volume:/workspace/linked_volume
+    networks:
+      - wikidump
+networks:
+  wikidump:
+  
