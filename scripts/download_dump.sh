@@ -17,4 +17,4 @@ wget -nc ${url}-pages-articles.xml.bz2 \
      ${url}-redirect.sql.gz \
      ${url}-categorylinks.sql.gz \
      ${url}-langlinks.sql.gz \
-     -P ${DUMPDIR}/${lang}wiki/
+     -P ${DUMPDIR}/

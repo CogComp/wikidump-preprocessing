@@ -65,7 +65,7 @@ text: dumps
 	${WIKIEXTRACTOR} \
 	-o ${OUTDIR}/${LANG}wiki_with_links \
 	-l -q --filter_disambig_pages \
-	${DUMPDIR}/${LANG}wiki/${LANG}wiki-${DATE}-pages-articles.xml.bz2; \
+	${DUMPDIR}/${LANG}wiki-${DATE}-pages-articles.xml.bz2; \
 	fi
 id2title: dumps softlinks
 	@if [ -f "${OUTDIR}/idmap/${LANG}wiki-${DATE}.id2t" ]; then \
@@ -113,7 +113,7 @@ langlinks: dumps id2title redirects
 	echo $(ERROR_COLOR) "fr2entitle exists!" $(NO_COLOR); \
 	else echo $(OK_COLOR) "making fr2entitle" $(NO_COLOR); \
 	${PYTHONBIN} -m dp.langlinks \
-	--langlinks ${DUMPDIR}/${LANG}wiki/${LANG}wiki-${DATE}-langlinks.sql.gz \
+	--langlinks ${DUMPDIR}/${LANG}wiki-${DATE}-langlinks.sql.gz \
 	--frid2t ${OUTDIR}/idmap/${LANG}wiki-${DATE}.id2t \
 	--out ${OUTDIR}/idmap/fr2entitles; \
 	fi
