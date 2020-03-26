@@ -29,6 +29,7 @@ therefore `PATH_OUTDIR` does not need to contain this information.
 This path should be the same when processing multiple languages and/or dates; this codebase will create an appropriate nested directory structure.
 
 4. Identify the Wikipedia language `WIKI_LANG` (usually 2 or 3 letter code) and the date `WIKI_DATE` (YEARMONTHDATE) that needs to be processed.
+You can find available dates here (https://dumps.wikimedia.org/${lang}wiki)
 
 Run the following command to generate the processed wikipedia output:
 ```
